@@ -1,0 +1,5 @@
+F:\guitarpi\FftGuitarTuner_src\SoundAnalysis\bin\Debug\SoundAnalysis.dll
+F:\guitarpi\FftGuitarTuner_src\SoundAnalysis\bin\Debug\SoundAnalysis.pdb
+F:\guitarpi\FftGuitarTuner_src\SoundAnalysis\obj\Debug\ResolveAssemblyReference.cache
+F:\guitarpi\FftGuitarTuner_src\SoundAnalysis\obj\Debug\SoundAnalysis.dll
+F:\guitarpi\FftGuitarTuner_src\SoundAnalysis\obj\Debug\SoundAnalysis.pdb

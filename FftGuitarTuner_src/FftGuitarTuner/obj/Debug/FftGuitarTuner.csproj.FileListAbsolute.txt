@@ -1,0 +1,15 @@
+F:\guitarpi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\ResolveAssemblyReference.cache
+F:\guitarpi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\ResGen.read.1.tlog
+F:\guitarpi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\ResGen.write.1.tlog
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\bin\Debug\FftGuitarTuner.exe
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\bin\Debug\FftGuitarTuner.pdb
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\bin\Debug\SoundAnalysis.dll
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\bin\Debug\SoundCapture.dll
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\bin\Debug\SoundAnalysis.pdb
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\bin\Debug\SoundCapture.pdb
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\FftGuitarTuner.FrequenciesScale.resources
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\FftGuitarTuner.MainForm.resources
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\FftGuitarTuner.Properties.Resources.resources
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\FftGuitarTuner.SelectDeviceForm.resources
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\FftGuitarTuner.exe
+F:\GuitarPi\FftGuitarTuner_src\FftGuitarTuner\obj\Debug\FftGuitarTuner.pdb

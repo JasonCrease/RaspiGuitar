@@ -1,0 +1,5 @@
+F:\guitarpi\FftGuitarTuner_src\SoundCapture\obj\Debug\ResolveAssemblyReference.cache
+F:\GuitarPi\FftGuitarTuner_src\SoundCapture\bin\Debug\SoundCapture.dll
+F:\GuitarPi\FftGuitarTuner_src\SoundCapture\bin\Debug\SoundCapture.pdb
+F:\GuitarPi\FftGuitarTuner_src\SoundCapture\obj\Debug\SoundCapture.dll
+F:\GuitarPi\FftGuitarTuner_src\SoundCapture\obj\Debug\SoundCapture.pdb
