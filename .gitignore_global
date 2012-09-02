@@ -1,3 +1,4 @@
-# Annoying VS file #
-####################
+# Annoying VS files and folders #
+#################################
 *.sdf
+ipch/
