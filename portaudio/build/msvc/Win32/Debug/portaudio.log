@@ -1,0 +1,87 @@
+﻿Build started 29/08/2012 19:14:12.
+     1>Project "F:\GuitarPi\portaudio\build\msvc\portaudio.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Win32\Debug\portaudio.unsuccessfulbuild".
+       ClCompile:
+         All outputs are up-to-date.
+         f:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\..\src\common /I..\..\include /I.\ /I..\..\src\os\win /ZI /nologo /W3 /WX- /Od /Oy /D WIN32 /D _DEBUG /D _USRDLL /D PA_ENABLE_DEBUG_OUTPUT /D _CRT_SECURE_NO_DEPRECATE /D PAWIN_USE_WDMKS_DEVICE_INFO /D PA_USE_ASIO=0 /D PA_USE_DS=0 /D PA_USE_WMME=1 /D PA_USE_WASAPI=1 /D PA_USE_WDMKS=1 /D _VC80_UPGRADE=0x0600 /D _WINDLL /Gm /EHsc /RTC1 /MT /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"Win32\Debug\\" /Fd"Win32\Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\hostapi\asio\ASIOSDK\asio.cpp ..\..\src\hostapi\asio\ASIOSDK\asiodrivers.cpp ..\..\src\hostapi\asio\ASIOSDK\asiolist.cpp
+         asiolist.cpp
+         asiodrivers.cpp
+         asio.cpp
+         Generating Code...
+         f:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\..\src\hostapi\asio\ASIOSDK\host /I..\..\src\hostapi\asio\ASIOSDK\host\pc /I..\..\src\hostapi\asio\ASIOSDK\common /I..\..\src\common /I..\..\include /I.\ /I..\..\src\os\win /ZI /nologo /W3 /WX- /Od /Oy /D WIN32 /D _DEBUG /D _USRDLL /D PA_ENABLE_DEBUG_OUTPUT /D _CRT_SECURE_NO_DEPRECATE /D PAWIN_USE_WDMKS_DEVICE_INFO /D PA_USE_ASIO=0 /D PA_USE_DS=0 /D PA_USE_WMME=1 /D PA_USE_WASAPI=1 /D PA_USE_WDMKS=1 /D _VC80_UPGRADE=0x0600 /D _WINDLL /Gm /EHsc /RTC1 /MT /GS /fp:fast /Zc:wchar_t /Zc:forScope /Fo"Win32\Debug\\" /Fd"Win32\Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\hostapi\asio\pa_asio.cpp
+         pa_asio.cpp
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Win32\Debug\portaudio.dll.embed.manifest.res" Win32\Debug\portaudio_manifest.rc 
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(F:\GuitarPi\portaudio\build\msvc\Win32\Debug\portaudio.dll) does not match the Linker's OutputFile property value (F:\GuitarPi\portaudio\build\msvc\Win32\Debug\portaudio_x86.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(portaudio) does not match the Linker's OutputFile property value (portaudio_x86). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         f:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Win32\Debug\portaudio_x86.dll" /INCREMENTAL /NOLOGO ksguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\portaudio.def" /MANIFEST /ManifestFile:"Win32\Debug\portaudio.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Win32\Debug\portaudio_x86.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Win32\Debug\portaudio_x86.lib" /MACHINE:X86 /DLL Win32\Debug\portaudio.dll.embed.manifest.res
+         Win32\Debug\pa_allocation.obj
+         Win32\Debug\pa_converters.obj
+         Win32\Debug\pa_cpuload.obj
+         Win32\Debug\pa_debugprint.obj
+         Win32\Debug\pa_dither.obj
+         Win32\Debug\pa_front.obj
+         Win32\Debug\asio.obj
+         Win32\Debug\asiodrivers.obj
+         Win32\Debug\asiolist.obj
+         Win32\Debug\pa_hostapi_skeleton.obj
+         Win32\Debug\pa_process.obj
+         Win32\Debug\pa_ringbuffer.obj
+         Win32\Debug\pa_stream.obj
+         Win32\Debug\pa_trace.obj
+         Win32\Debug\pa_asio.obj
+         Win32\Debug\pa_win_ds.obj
+         Win32\Debug\pa_win_ds_dynlink.obj
+         Win32\Debug\pa_win_wmme.obj
+         Win32\Debug\pa_win_wasapi.obj
+         Win32\Debug\pa_win_wdmks.obj
+         Win32\Debug\pa_win_coinitialize.obj
+         Win32\Debug\pa_win_hostapis.obj
+         Win32\Debug\pa_win_util.obj
+         Win32\Debug\pa_win_waveformat.obj
+         Win32\Debug\pa_win_wdmks_utils.obj
+         Win32\Debug\pa_x86_plain_converters.obj
+            Creating library Win32\Debug\portaudio_x86.lib and object Win32\Debug\portaudio_x86.exp
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Win32\Debug\portaudio.dll.embed.manifest" /manifest Win32\Debug\portaudio.dll.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Win32\Debug\portaudio.dll.embed.manifest.res" Win32\Debug\portaudio_manifest.rc 
+       LinkEmbedManifest:
+         f:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Win32\Debug\portaudio_x86.dll" /INCREMENTAL /NOLOGO ksguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\portaudio.def" /MANIFEST /ManifestFile:"Win32\Debug\portaudio.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Win32\Debug\portaudio_x86.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Win32\Debug\portaudio_x86.lib" /MACHINE:X86 /DLL Win32\Debug\portaudio.dll.embed.manifest.res
+         Win32\Debug\pa_allocation.obj
+         Win32\Debug\pa_converters.obj
+         Win32\Debug\pa_cpuload.obj
+         Win32\Debug\pa_debugprint.obj
+         Win32\Debug\pa_dither.obj
+         Win32\Debug\pa_front.obj
+         Win32\Debug\asio.obj
+         Win32\Debug\asiodrivers.obj
+         Win32\Debug\asiolist.obj
+         Win32\Debug\pa_hostapi_skeleton.obj
+         Win32\Debug\pa_process.obj
+         Win32\Debug\pa_ringbuffer.obj
+         Win32\Debug\pa_stream.obj
+         Win32\Debug\pa_trace.obj
+         Win32\Debug\pa_asio.obj
+         Win32\Debug\pa_win_ds.obj
+         Win32\Debug\pa_win_ds_dynlink.obj
+         Win32\Debug\pa_win_wmme.obj
+         Win32\Debug\pa_win_wasapi.obj
+         Win32\Debug\pa_win_wdmks.obj
+         Win32\Debug\pa_win_coinitialize.obj
+         Win32\Debug\pa_win_hostapis.obj
+         Win32\Debug\pa_win_util.obj
+         Win32\Debug\pa_win_waveformat.obj
+         Win32\Debug\pa_win_wdmks_utils.obj
+         Win32\Debug\pa_x86_plain_converters.obj
+            Creating library Win32\Debug\portaudio_x86.lib and object Win32\Debug\portaudio_x86.exp
+         portaudio.vcxproj -> F:\GuitarPi\portaudio\build\msvc\Win32\Debug\portaudio.dll
+       FinalizeBuildStatus:
+         Deleting file "Win32\Debug\portaudio.unsuccessfulbuild".
+         Touching "Win32\Debug\portaudio.lastbuildstate".
+     1>Done Building Project "F:\GuitarPi\portaudio\build\msvc\portaudio.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.20
