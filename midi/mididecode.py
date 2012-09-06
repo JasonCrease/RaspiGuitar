@@ -84,6 +84,9 @@ metaEventTypeNames={
 	0x7F:"Sequencer Specific",
 }
 
+"""Represents a MIDI event message, including Meta and SysEx events, but not including the delta time.
+"Running Events" (where the event type byte is implicit from the previous event), are fully decoded -
+this class always represents a complete message."""
 class MIDIEvent:
 	META_EVENT = 0xff
 	SYSEX_EVENT = 0xf0
@@ -91,6 +94,7 @@ class MIDIEvent:
 	def __init__(self):
 		self.messageData = ""
 
+	"""Returns the event type number. For a channel event this is in the range 0x8-0xe, otherwise this is META_EVENT or SYSEX_EVENT."""
 	def Type(self):
 		(type,) = struct.unpack("B", self.messageData[0])
 		if type == MIDIEvent.META_EVENT or type == MIDIEvent.SYSEX_EVENT:
@@ -98,17 +102,22 @@ class MIDIEvent:
 		else:
 			return type >> 4
 		
+	"""Returns the event type as a human readable string."""		
 	def TypeName(self):
 		return midiEventTypeNames[self.Type()]
 	
+	"""Returns the meta event type number. Valid only if Type() is META_EVENT."""
 	def MetaEventType(self):
 		assert self.Type() == MIDIEvent.META_EVENT
 		(metaEventType,) = struct.unpack("B", self.messageData[1])
 		return metaEventType
 	
+	"""Returns the meta event type as a human readable string. Valid only if Type() is META_EVENT."""
 	def MetaEventTypeName(self):
 		return metaEventTypeNames[self.MetaEventType()]
 
+	"""Returns the string associated with a meta event with an ASCII text payload.
+	Valid only if Type() is META_EVENT."""
 	def MetaEventString(self):
 		assert self.Type() == MIDIEvent.META_EVENT
 		if self.MetaEventType() in asciiMetaEventTypes:
@@ -117,10 +126,12 @@ class MIDIEvent:
 		else:
 			return None
 	
+	"""Returns the length in bytes of the meta data payload. Valid only if Type() is META_EVENT."""
 	def MetaDataLength(self):
 		assert self.Type() == MIDIEvent.META_EVENT
 		return MIDIEvent._decodeVariableLength(self.messageData[2:])
 	
+	"""Returns the length in bytes of the SysEx message payload. Valid only if Type() is SYSEX_EVENT."""
 	def SysExLength(self):
 		assert self.Type() == MIDIEvent.SYSEX_EVENT
 		return MIDIEvent._decodeVariableLength(self.messageData[1:])
@@ -135,16 +146,19 @@ class MIDIEvent:
 			if x & 0x80 == 0:
 				return result
 	
+	"""Returns the channel number that the event corresponds to. Not valid for META_EVENT or SYSEX_EVENT."""
 	def Channel(self):
 		type = self.Type()
 		assert type >= 0x8 and type <= 0xe
 		return ord(self.messageData[0]) & 0xf
 
+	"""Returns the first parameter of a channel event."""
 	def Param1(self):
 		type = self.Type()
 		assert type >= 0x8 and type <= 0xe
 		return ord(self.messageData[1])
 	
+	"""Returns the second parameter of a channel event. This is None for 0xc "Program Change" and 0xd "Channel Aftertouch"."""
 	def Param2(self):
 		type = self.Type()
 		assert type >= 0x8 and type <= 0xe
@@ -153,6 +167,7 @@ class MIDIEvent:
 		else:
 			return ord(self.messageData[2])
 
+"""Prints a report of the information returned from DecodeTrack."""
 def PrintTrack(eventList):
 	print "Time\t% 18s  Channel  Param1  Param2" % "Event"
 	time = 0
@@ -175,6 +190,7 @@ def PrintTrack(eventList):
 				param2 = ""
 			print "%d\t% 18s  % 7d  % 6d  %s" % (time, event.TypeName(), event.Channel(), event.Param1(), param2)
 
+"""Decodes the track trackNum from the file. Returns a list of (deltaTime, MIDIEvent) tuples."""
 def DecodeTrack(file, chunkIdx, trackNum):
 	where = chunkIdx["MTrk"][trackNum]
 	file.seek(where["offset"])
