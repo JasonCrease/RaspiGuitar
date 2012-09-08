@@ -3,3 +3,6 @@
 *.sdf
 ipch/
 *.suo
+*.pyc
+midi/baud_hack
+midi/baud_hack.exe

@@ -2,8 +2,6 @@
 
 import struct, sys
 
-file=open(sys.argv[1], "r")
-
 def readFully(file, size):
 	ret = ""
 	remain = size
@@ -88,6 +86,10 @@ metaEventTypeNames={
 "Running Events" (where the event type byte is implicit from the previous event), are fully decoded -
 this class always represents a complete message."""
 class MIDIEvent:
+	NOTE_OFF = 0x8
+	NOTE_ON = 0x9
+	END_OF_TRACK = 0x2f
+	SET_TEMPO = 0x51
 	META_EVENT = 0xff
 	SYSEX_EVENT = 0xf0
 	
@@ -166,6 +168,12 @@ class MIDIEvent:
 			return None
 		else:
 			return ord(self.messageData[2])
+	
+	"""If this is a Set Tempo Meta Event, return the microseconds per quarter note (== microseconds per beat)."""
+	def MicrosecondsPerQuarterNote(self):
+		assert self.Type() == MIDIEvent.META_EVENT and self.MetaEventType() == MIDIEvent.SET_TEMPO
+		(hi,lo) = struct.unpack(">HB", self.messageData[-3:])
+		return (hi<<8) | lo
 
 """Prints a report of the information returned from DecodeTrack."""
 def PrintTrack(eventList):
@@ -175,11 +183,16 @@ def PrintTrack(eventList):
 		time += deltaTime
 		type = event.Type()
 		if type == MIDIEvent.META_EVENT:
-			metaStr = event.MetaEventString()
-			if metaStr != None:
-				print "%d\t%s: %s" % (time, event.MetaEventTypeName(), metaStr)
+			if event.MetaEventType() == MIDIEvent.SET_TEMPO:
+				mpqn = event.MicrosecondsPerQuarterNote()
+				bpm = 60000000/mpqn
+				print "%d\tSet Tempo (mpqn=%d bpm=%d)" % (time, mpqn, bpm)
 			else:
-				print "%d\t%s (%d bytes)" % (time, event.MetaEventTypeName(), event.MetaDataLength())
+				metaStr = event.MetaEventString()
+				if metaStr != None:
+					print "%d\t%s: %s" % (time, event.MetaEventTypeName(), metaStr)
+				else:
+					print "%d\t%s (%d bytes)" % (time, event.MetaEventTypeName(), event.MetaDataLength())
 		elif type == MIDIEvent.SYSEX_EVENT:
 			print "%d\tSysEx (%d bytes)" % (time, event.SysExLength())
 		else:
@@ -234,14 +247,25 @@ def DecodeTrack(file, chunkIdx, trackNum):
 		events.append((deltaTime, event))
 	assert file.tell() == endOffset
 	return events
-	
-chunkIdx = FindRiffChunks(file)
-hdr = DecodeHeader(file, chunkIdx)
-print hdr
-if hdr["numTracks"] != len(chunkIdx["MTrk"]):
-	raise ValueError("track count mismatch")
-for trackNum in xrange(0, hdr["numTracks"]):
-	print "TRACK %d" % trackNum
-	PrintTrack(DecodeTrack(file, chunkIdx, trackNum))
 
-file.close()
+"""Filters the track for tempo change events, returning a list of (deltaTime, microsecondsPerQuarterNote).
+If there is no tempo recorded in the track, returns a setting of 120 BPM from stream start."""
+def GetTempoChangeEvents(events):
+	events = [(deltaTime, event.MicrosecondsPerQuarterNote()) for (deltaTime, event) in events if event.Type() == MIDIEvent.META_EVENT and event.MetaEventType() == MIDIEvent.SET_TEMPO]
+	if events == []:
+		# if no Set Tempo events are present, 120 BPM is assumed
+		events = [(0, 60000000/120)]
+	return events
+
+if __name__ == "__main__":
+	file=open(sys.argv[1], "r")
+	chunkIdx = FindRiffChunks(file)
+	hdr = DecodeHeader(file, chunkIdx)
+	print hdr
+	if hdr["numTracks"] != len(chunkIdx["MTrk"]):
+		raise ValueError("track count mismatch")
+	for trackNum in xrange(0, hdr["numTracks"]):
+		print "TRACK %d" % trackNum
+		PrintTrack(DecodeTrack(file, chunkIdx, trackNum))
+	
+	file.close()
