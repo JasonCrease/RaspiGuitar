@@ -50,12 +50,6 @@ def MIDINoteFrequencyHz(midiNote):
 	assert midiNote >= 0 and midiNote < 128
 	return 440.0 * math.pow(2, (midiNote-69)/12.0)
 
-def IntegrateTime(events):
-	time = 0
-	for (deltaTime, event) in events:
-		time += deltaTime
-		yield (time, event)
-
 """Converts the timestamps on the event list into milliseconds from the track time.
 This is based on the Time Division in the header and the tempo, where the tempo can
 change throughout the track."""
@@ -116,13 +110,14 @@ def ExtractMonophonicNotes(trackEvents):
 midiFile=open(sys.argv[1], "r")
 chunkIdx = FindRiffChunks(midiFile)
 hdr = DecodeHeader(midiFile, chunkIdx)
-tempoChangeEvents = list(IntegrateTime(GetTempoChangeEvents(DecodeTrack(midiFile, chunkIdx, 0))))
+tempoChangeEvents = GetTempoChangeEvents(DecodeTrack(midiFile, chunkIdx, 0))
 print tempoChangeEvents
 SampleRate=44100
 for trackNum in xrange(1, hdr["numTracks"]):
-	print "Synth Track %d" % trackNum
-	wavFile = WAVWriter(open("track%d.wav" % trackNum, "wb"), SampleRate=SampleRate)
-	channelEvents = IntegrateTime(DecodeTrack(midiFile, chunkIdx, trackNum))
+	filename = "track%d.wav" % trackNum
+	print "writing %s" % filename
+	wavFile = WAVWriter(open(filename, "wb"), SampleRate=SampleRate)
+	channelEvents = DecodeTrack(midiFile, chunkIdx, trackNum)
 	LE16(GenerateWaveform(ExtractMonophonicNotes(TrackTimeToMillis(hdr, channelEvents, tempoChangeEvents)), 1000.0/SampleRate), wavFile)
 	wavFile.close()
 midiFile.close()

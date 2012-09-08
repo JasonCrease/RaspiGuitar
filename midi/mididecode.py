@@ -178,9 +178,7 @@ class MIDIEvent:
 """Prints a report of the information returned from DecodeTrack."""
 def PrintTrack(eventList):
 	print "Time\t% 18s  Channel  Param1  Param2" % "Event"
-	time = 0
-	for (deltaTime, event) in eventList:
-		time += deltaTime
+	for (time, event) in eventList:
 		type = event.Type()
 		if type == MIDIEvent.META_EVENT:
 			if event.MetaEventType() == MIDIEvent.SET_TEMPO:
@@ -203,15 +201,17 @@ def PrintTrack(eventList):
 				param2 = ""
 			print "%d\t% 18s  % 7d  % 6d  %s" % (time, event.TypeName(), event.Channel(), event.Param1(), param2)
 
-"""Decodes the track trackNum from the file. Returns a list of (deltaTime, MIDIEvent) tuples."""
+"""Decodes the track trackNum from the file. Returns a list of (time, MIDIEvent) tuples."""
 def DecodeTrack(file, chunkIdx, trackNum):
 	where = chunkIdx["MTrk"][trackNum]
 	file.seek(where["offset"])
 	endOffset = where["offset"] + where["length"]
 	events = []
+	time = 0
 	while file.tell() < endOffset:
 		event = MIDIEvent()
 		(deltaTime,discard) = ReadVariableLengthNumber(file, None)
+		time += deltaTime
 		etcByte = readFully(file, 1)
 		(eventTypeAndChannel,) = struct.unpack("B", etcByte)
 		if eventTypeAndChannel == 0xFF:
@@ -244,14 +244,14 @@ def DecodeTrack(file, chunkIdx, trackNum):
 				byte = readFully(file, 1)
 				event.messageData += byte
 		previousEtcByte = etcByte
-		events.append((deltaTime, event))
+		events.append((time, event))
 	assert file.tell() == endOffset
 	return events
 
-"""Filters the track for tempo change events, returning a list of (deltaTime, microsecondsPerQuarterNote).
+"""Filters the track for tempo change events, returning a list of (time, microsecondsPerQuarterNote).
 If there is no tempo recorded in the track, returns a setting of 120 BPM from stream start."""
 def GetTempoChangeEvents(events):
-	events = [(deltaTime, event.MicrosecondsPerQuarterNote()) for (deltaTime, event) in events if event.Type() == MIDIEvent.META_EVENT and event.MetaEventType() == MIDIEvent.SET_TEMPO]
+	events = [(time, event.MicrosecondsPerQuarterNote()) for (time, event) in events if event.Type() == MIDIEvent.META_EVENT and event.MetaEventType() == MIDIEvent.SET_TEMPO]
 	if events == []:
 		# if no Set Tempo events are present, 120 BPM is assumed
 		events = [(0, 60000000/120)]
