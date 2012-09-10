@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from mididecode import FindRiffChunks, DecodeHeader, MIDIEvent, DecodeTrack, GetTempoChangeEvents
+from mididecode import FindRiffChunks, DecodeHeader, MIDIEvent, DecodeTrack, GetTempoChangeEvents, FilterEventsByChannel
 from wavwriter import WAVWriter
 
 import math, sys
@@ -110,14 +110,26 @@ def ExtractMonophonicNotes(trackEvents):
 midiFile=open(sys.argv[1], "r")
 chunkIdx = FindRiffChunks(midiFile)
 hdr = DecodeHeader(midiFile, chunkIdx)
-tempoChangeEvents = GetTempoChangeEvents(DecodeTrack(midiFile, chunkIdx, 0))
-print tempoChangeEvents
+track0 = DecodeTrack(midiFile, chunkIdx, 0)
+tempoChangeEvents = GetTempoChangeEvents(track0)
 SampleRate=44100
-for trackNum in xrange(1, hdr["numTracks"]):
-	filename = "track%d.wav" % trackNum
+# Type 0 MIDI files are synthesised by separate channels
+# Type 1 and 2 files are synthesised by track
+if hdr["formatType"] == 0:
+	eventsPerChannel = FilterEventsByChannel(track0)
+	range = eventsPerChannel.keys()
+else:
+	range = xrange(1, hdr["numTracks"])
+track0 = None
+for i in range:
+	if hdr["formatType"] == 0:
+		filename = "channel%d.wav" % i
+		channelEvents = eventsPerChannel[i]
+	else:
+		filename = "track%d.wav" % i
+		channelEvents = DecodeTrack(midiFile, chunkIdx, i)
 	print "writing %s" % filename
 	wavFile = WAVWriter(open(filename, "wb"), SampleRate=SampleRate)
-	channelEvents = DecodeTrack(midiFile, chunkIdx, trackNum)
 	LE16(GenerateWaveform(ExtractMonophonicNotes(TrackTimeToMillis(hdr, channelEvents, tempoChangeEvents)), 1000.0/SampleRate), wavFile)
 	wavFile.close()
 midiFile.close()

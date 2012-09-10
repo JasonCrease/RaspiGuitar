@@ -257,6 +257,23 @@ def GetTempoChangeEvents(events):
 		events = [(0, 60000000/120)]
 	return events
 
+"""Separates channel specific events, returning a dictionary from channel number onto a (time, event) list.
+All channels returned will end with MIDIEvent.END_OF_TRACK."""
+def FilterEventsByChannel(events):
+	ebc = dict()
+	for (time, event) in events:
+		type = event.Type()
+		if type >= 0x8 and type <= 0xe:
+			channel = event.Channel()
+			if channel not in ebc:
+				ebc[channel] = []
+			ebc[channel].append((time, event))
+		elif type == MIDIEvent.META_EVENT and event.MetaEventType() == MIDIEvent.END_OF_TRACK:
+			for channel in ebc.keys():
+				ebc[channel].append((time, event))
+			return ebc
+	raise AssertionError("end of track expected")
+
 if __name__ == "__main__":
 	file=open(sys.argv[1], "r")
 	chunkIdx = FindRiffChunks(file)
